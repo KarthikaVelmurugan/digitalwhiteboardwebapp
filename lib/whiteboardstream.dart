@@ -38,7 +38,7 @@ int g=0,balance=0;
       child:Column(
           //mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Expanded(
+            Expanded
               child:*/ Whiteboard(
                 controller: controller_stream,
               //),

@@ -44,9 +44,6 @@ class _HomePage extends State<HomePage> {
         .listen((event) {
       print(event.data['email']);
       email = event.data['email'];
-      setState(() {
-        live = event.data['live'];
-      });
 
       print(live);
     });
@@ -153,20 +150,19 @@ class _HomePage extends State<HomePage> {
               ),
               SizedBox(width: 5),
               Container(
-                height: ht - ht / 5,
-                width: wt - wt / 4,
-                child: live
-                    ? WhiteBoardStream(
-                        random: ran,
-                      )
-                    :
-                    /* live ? Column(
+                  height: ht - ht / 5,
+                  width: wt - wt / 4,
+                  child: WhiteBoardStream(
+                    random: ran,
+                  )
+
+                  /* live ? Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children:<Widget>[
                       Text("White Board",style:TextStyle(fontSize: wt/30,fontWeight: FontWeight.bold)),
                       WhiteBoardStream() ]): */
 
-                    Column(
+                  /*  Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
                             Image.asset(
@@ -176,8 +172,8 @@ class _HomePage extends State<HomePage> {
                               width: wt / 15,
                             ),
                             Text("No subscribers")
-                          ]),
-              )
+                          ]),*/
+                  )
             ],
           ),
         ));

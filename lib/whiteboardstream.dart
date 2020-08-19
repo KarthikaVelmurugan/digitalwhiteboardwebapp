@@ -13,8 +13,7 @@ class WhiteBoardStream extends StatefulWidget {
 
 class _WhiteBoardStreamState extends State<WhiteBoardStream> {
   SketchStreamController controller_stream;
-  DrawingController controller;
-  int g = 0, balance = 0;
+
   String email;
   bool live;
   @override
@@ -32,16 +31,9 @@ class _WhiteBoardStreamState extends State<WhiteBoardStream> {
     double height = size.height;
     double width = size.width;
     print("The ratio " + ratio.toString());
-    setState(() {
-      controller_stream.initializeSize(100, 600);
-    });
+
     // controller_stream.initializeSize(2000, 400);
-    ResponsiveWidgets.init(
-      context,
-      height: height, // Optional
-      width: width * 20, // Optional
-      allowFontScaling: true, // Optional
-    );
+
     Firestore.instance
         .collection('qrcode')
         .document(widget.random)
@@ -52,30 +44,17 @@ class _WhiteBoardStreamState extends State<WhiteBoardStream> {
       live = event.data['live'];
       print(live);
     });
-    return ResponsiveWidgets.builder(
-        height: height, // Optional
-        width: width, // Optional
-        allowFontScaling: true, // Optional
-        child:
-            /*  body: Center(
-        child: AspectRatio(
-            aspectRatio: 2 / 2,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[*/
-            SingleChildScrollView(
-                child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Whiteboard(
-              controller: controller_stream,
-            ),
-          ],
-        )) /* child: Whiteboard(
-                controller: controller_stream,
-              ),*/
-
-        );
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Expanded(
+          child: Whiteboard(
+            controller: controller_stream,
+          ),
+        ),
+      ],
+    ));
   }
 
   @override
@@ -141,7 +120,6 @@ controller_stream.addChunk(DrawChunk.fromJson(DocumentSnapShot.data));
           var chunk_data = DrawChunk.fromJson(events.documents[i].data);
 
           controller_stream.addChunk(chunk_data);
-          controller_stream.initializeSize(100, 600);
         }
       });
 

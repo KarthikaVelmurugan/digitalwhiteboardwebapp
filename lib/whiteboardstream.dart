@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:responsive_widgets/responsive_widgets.dart';
 import 'package:whiteboardkit/sketch_stream_controller.dart';
 import 'package:whiteboardkit/whiteboardkit.dart';
@@ -28,11 +29,18 @@ class _WhiteBoardStreamState extends State<WhiteBoardStream> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     dynamic ratio = MediaQuery.of(context).size.aspectRatio;
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
     double height = size.height;
     double width = size.width;
-    print("The ratio " + ratio.toString());
+    setState(() {
+      controller_stream.initializeSize(width * 2.3, height * 3);
+    });
 
-    // controller_stream.initializeSize(2000, 400);
+    // controller_stream.initializeSize(height, width);
+    print("The ratio " + ratio.toString());
 
     Firestore.instance
         .collection('qrcode')
@@ -52,7 +60,7 @@ class _WhiteBoardStreamState extends State<WhiteBoardStream> {
           child: Whiteboard(
             controller: controller_stream,
           ),
-        ),
+        )
       ],
     ));
   }

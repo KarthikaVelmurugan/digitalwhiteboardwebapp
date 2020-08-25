@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:responsive_widgets/responsive_widgets.dart';
 import 'package:whiteboardkit/sketch_stream_controller.dart';
 import 'package:whiteboardkit/whiteboardkit.dart';
 
@@ -13,6 +12,7 @@ class WhiteBoardStream extends StatefulWidget {
 }
 
 class _WhiteBoardStreamState extends State<WhiteBoardStream> {
+  //create controller for whiteboard widget
   SketchStreamController controller_stream;
 
   String email;
@@ -20,7 +20,7 @@ class _WhiteBoardStreamState extends State<WhiteBoardStream> {
   @override
   void initState() {
     controller_stream = new SketchStreamController();
-
+    //get chunk of data from mobile { Get chunkdata on mobile app whiteboard}
     getChunk();
     super.initState();
   }
@@ -52,17 +52,20 @@ class _WhiteBoardStreamState extends State<WhiteBoardStream> {
       live = event.data['live'];
       print(live);
     });
-    return Center(
-        child: Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Expanded(
-          child: Whiteboard(
-            controller: controller_stream,
-          ),
-        )
-      ],
-    ));
+    return Padding(
+        padding: EdgeInsets.only(top: 100, bottom: 100, left: 10, right: 10),
+        child: Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              child: Whiteboard(
+                controller: controller_stream,
+              ),
+            )
+          ],
+        )));
   }
 
   @override
@@ -77,28 +80,8 @@ class _WhiteBoardStreamState extends State<WhiteBoardStream> {
   }
 
   void getChunk() {
-    /*Firestore.instance
-        .collection('books')
-        .document('chunk')
-        .get()
-        .then((DocumentSnapshot ds) {
-      // use ds as a snapshot
-      var ch = DrawChunk.fromJson(ds.data);
-      print(ds.data);
-      setState(() {
-        controller_stream.addChunk(ch);
-        print('a');
-      });
-    });*/
-    int flag;
-    // Firestore.instance.collection('qrcode').document(widget.random).snapshots().listen((event) {
-    //  print(event.data['flag']);
-    //  flag = event.data['flag'];
-    // print(flag);
-
-    //  });
-    print("okkkk");
     print("widget.random" + widget.random);
+    //get chunk data from mobile app whiteboard
     Firestore.instance
         .collection('qrcode')
         .document(widget.random)
@@ -107,11 +90,6 @@ class _WhiteBoardStreamState extends State<WhiteBoardStream> {
       print(event.data['email']);
       email = event.data['email'];
 
-/*  Firestore.instance.collection('users').document(email).collection('whiteboard').document(flag.toString()).get().then((DocumentSnapShot){
-// DrawChunk.fromJson(DocumentSnapShot.data);
-controller_stream.addChunk(DrawChunk.fromJson(DocumentSnapShot.data));
-  });
- */
       Firestore.instance
           .collection('users')
           .document(email)
@@ -130,37 +108,6 @@ controller_stream.addChunk(DrawChunk.fromJson(DocumentSnapShot.data));
           controller_stream.addChunk(chunk_data);
         }
       });
-
-      /*  Firestore.instance
-          .collection("users/email/whiteboard")
-
-          ///${event.data['id']}/chdata/cf
-          .snapshots()
-          .listen((events) {
-        //print(events.documentChanges);
-        /*var chunk_data = DrawChunk.fromJson(events.data);
-        controller_stream.addChunk(chunk_data);*/
-      });
-      /*Firestore.instance
-          .collection("books/${event.data['id']}/chdata")
-          //.where("address.country", isEqualTo: "USA")
-          .snapshots()
-          .listen((result) {
-        result.documents.forEach((result) {
-          //print(result.data);
-          var ch = DrawChunk.fromJson(result.data);
-          //print(ds.data);
-          setState(() {
-            controller_stream.addChunk(ch);
-            //print(result.data);
-          });
-        });
-      });*/
-    });*/
-      /*Firestore.instance.document('qrcode/1').get().then((value) {
-      print(value.data['id']);
-      
-    });*/
     });
   }
 }

@@ -1,10 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:whiteboard/animation_delay.dart';
-import 'package:whiteboard/demo.dart';
 import 'package:whiteboard/homescreen.dart';
-import 'package:whiteboard/shared.dart'; //animationdelay
-
+import 'package:whiteboard/shared.dart';
 import 'theme.dart' as Theme;
 
 void main() {
@@ -18,6 +16,7 @@ class MyApp extends StatelessWidget {
       title: "Online whiteBoard",
       debugShowCheckedModeBanner: false,
       theme: ThemeData(fontFamily: 'Poppins'),
+      //Index page
       home: Home(),
     );
   }
@@ -29,12 +28,13 @@ class Home extends StatefulWidget {
 }
 
 class _Home extends State<Home> with SingleTickerProviderStateMixin {
+  //initialize animation delay time as 500 as start
   final int delayedAmount = 500;
-  double _scale;
   AnimationController _controller;
 
   @override
   void initState() {
+    //create controller  for Animation Widget
     _controller = AnimationController(
       vsync: this,
       duration: Duration(
@@ -50,8 +50,6 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    _scale = 1 - _controller.value;
-
     MediaQueryData queryData = MediaQuery.of(context);
     double ht = queryData.size.height;
     double wt = queryData.size.width;
@@ -62,6 +60,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
         width: wt,
         decoration: new BoxDecoration(
           gradient: new LinearGradient(
+              //Using theme.dart set background color
               colors: [
                 Theme.Colors.loginGradientStart,
                 Theme.Colors.loginGradientEnd
@@ -75,6 +74,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
+            //set Delay animation for showing all widgets after few secs
             DelayedAnimation(
               child: Container(
                 padding: EdgeInsets.all(8.0),
@@ -116,7 +116,9 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
             DelayedAnimation(
               child: Padding(
                   padding: EdgeInsets.all(10),
-                  child: Container(child: _startButton(wt))),
+                  child: Container(
+                      //create start button
+                      child: _startButton(wt))),
               delay: delayedAmount + 5000,
             )
           ],
@@ -128,12 +130,11 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
   Widget _startButton(double wt) {
     return OutlineButton(
       onPressed: () async {
+        //Navigate to homepage
         Navigator.of(context)
             .pushReplacement(MaterialPageRoute(builder: (context) {
           return HomePage();
         }));
-
-        //    toast(context,"Successfully signin your google account!");
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
       highlightElevation: 0,
